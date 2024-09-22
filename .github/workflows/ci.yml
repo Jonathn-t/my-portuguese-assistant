@@ -13,13 +13,13 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_DB: test_db
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U $${POSTGRES_USER}
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -37,11 +37,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Wait for PostgreSQL
+      run: |
+        for i in {1..10}; do
+          pg_isready -h localhost -p 5432 -U ${{ secrets.POSTGRES_USER }} && break
+          echo "Waiting for PostgreSQL..."
+          sleep 5
+        done
+
     - name: Run tests
       env:
-        POSTGRES_DB: test_db
-        POSTGRES_USER: test_user
-        POSTGRES_PASSWORD: test_password
-        POSTGRES_HOST: localhost
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
       run: |
         python -m unittest discover -s tests
