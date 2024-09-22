@@ -4,9 +4,8 @@ Un assistant virtuel pour apprendre le portugais.
 
 ## Prérequis
 
-- Python 3.9
-- Docker
-- Docker Compose
+- **Docker** : Assurez-vous que Docker est installé sur votre machine.
+- **Docker Compose** : Docker Compose doit également être installé.
 
 ## Installation
 
