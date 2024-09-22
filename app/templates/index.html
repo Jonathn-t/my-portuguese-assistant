@@ -1,0 +1,20 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Assistant Portugais</title>
+</head>
+<body>
+    <h1>Bienvenue sur votre assistant portugais !</h1>
+    <h2>Leçons disponibles :</h2>
+    <ul>
+        {% for lesson in lessons %}
+            <li>
+                <h3>{{ lesson.title }}</h3>
+                <p>{{ lesson.content }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
